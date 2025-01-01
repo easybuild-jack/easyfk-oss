@@ -1,0 +1,13 @@
+dromara:
+  x-file-storage: #文件存储配置
+    default-platform: amazon-s3 #默认使用的存储平台
+    thumbnail-suffix: ".min.jpg" #缩略图后缀，例如【.min.jpg】【.png】
+    amazon-s3:
+      - platform: amazon-s3 # 存储平台标识
+        enable-storage: true  # 启用存储
+        access-key: dev
+        secret-key: 01BAI.com
+        end-point: http://192.168.100.88:9000
+        bucket-name: dev
+        domain: https://oss.01bai.com:100/x/dev/ # 访问域名，注意“/”结尾，例如：http://minio.abc.com/abc/
+        base-path: mcst/ # 基础路径

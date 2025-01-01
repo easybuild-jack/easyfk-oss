@@ -1,0 +1,13 @@
+dromara:
+  x-file-storage: #文件存储配置
+    default-platform: baidu #默认使用的存储平台
+    thumbnail-suffix: ".min.jpg" #缩略图后缀，例如【.min.jpg】【.png】
+    baidu-bos:
+      - platform: baidu # 存储平台标识
+        enable-storage: true  # 启用存储
+        access-key: ??
+        secret-key: ??
+        end-point: ?? # 例如 abc.fsh.bcebos.com
+        bucket-name: ??
+        domain: ?? # 访问域名，注意“/”结尾，例如：https://abc.fsh.bcebos.com/abc/
+        base-path: test/ # 基础路径

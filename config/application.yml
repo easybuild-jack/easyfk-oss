@@ -1,0 +1,14 @@
+server:
+  port: 9011
+logging:
+  config: file:config/log4j2.xml
+spring:
+  servlet:
+    multipart:
+      max-file-size: 1000MB
+      max-request-size: 1000MB
+  application:
+    name: easyfk-oss
+  profiles:
+    active: amazon
+

@@ -1,0 +1,80 @@
+//指定项目版本号和group
+version = '2.6.13.3'
+group = 'com.mcst'
+apply plugin: 'java-library'
+apply plugin: 'maven-publish'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+    withSourcesJar()
+}
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+dependencies {
+    implementation platform(libs.easyfkDependencies)
+    implementation("com.mcst:easyfk-core")
+    implementation("com.mcst:log-log4j2")
+    implementation("com.mcst:web-prd")
+    implementation(libs.fileStorage)
+    implementation(libs.minio)
+    implementation(libs.huawei)
+    implementation(libs.aliyun)
+    implementation(libs.qiniu)
+    implementation(libs.tencent)
+    implementation(libs.baidu)
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    testCompileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor('org.projectlombok:lombok:1.18.32', 'org.springframework' +
+            '.boot:spring-boot-configuration-processor:2.6.13')
+    testAnnotationProcessor('org.projectlombok:lombok:1.18.32', 'org.springframework' +
+            '.boot:spring-boot-configuration-processor:2.6.13')
+}
+
+publishing {
+    publications {
+        register("maven", MavenPublication) {
+            from(project.components["java"] as SoftwareComponent)
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
+
+            pom {
+                name.set(project.name)
+                description.set('MCST对象存储服务')
+                licenses {
+                    license {
+                        name.set('The Apache License, Version 2.0')
+                        url.set('http://www.apache.org/licenses/LICENSE-2.0.txt')
+                    }
+                }
+            }
+        }
+    }
+}
+
+// 将依赖包复制到lib目录
+tasks.register('copyJar', Copy) {
+    // 清除现有的lib目录
+    delete layout.buildDirectory.dir("libs/lib")
+    from configurations.runtimeClasspath
+    into layout.buildDirectory.dir("libs/lib")
+}
+
+tasks.named('jar') {
+    // 自定义jar包名称
+    archiveFileName = 'mcstOss.jar'
+    // lib目录的清除和复制任务
+    dependsOn copyJar
+    manifest {
+        attributes(
+                'Class-Path': configurations.runtimeClasspath.files.collect { "lib/$it.name" }.join(' '),
+                'Main-Class': 'com.mcst.easyfk.oss.OssApp'
+        )
+    }
+}
+
+tasks.named('wrapper') {
+    distributionUrl = 'https://services.gradle.org/distributions/gradle-8.7-bin.zip'
+}
