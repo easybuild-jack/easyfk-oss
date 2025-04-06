@@ -31,29 +31,6 @@ dependencies {
     testAnnotationProcessor('org.projectlombok:lombok:1.18.32', 'org.springframework' +
             '.boot:spring-boot-configuration-processor:2.6.13')
 }
-
-publishing {
-    publications {
-        register("maven", MavenPublication) {
-            from(project.components["java"] as SoftwareComponent)
-            groupId = project.group
-            artifactId = project.name
-            version = project.version
-
-            pom {
-                name.set(project.name)
-                description.set('MCST 对象存储服务')
-                licenses {
-                    license {
-                        name.set('The Apache License, Version 2.0')
-                        url.set('https://www.apache.org/licenses/LICENSE-2.0.txt')
-                    }
-                }
-            }
-        }
-    }
-}
-
 // 将依赖包复制到lib目录
 tasks.register('copyJar', Copy) {
     // 清除现有的lib目录
