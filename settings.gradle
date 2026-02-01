@@ -2,8 +2,10 @@ rootProject.name = 'easyfk-oss'
 
 dependencyResolutionManagement.versionCatalogs {
     libs {
-        library('easyfkDependencies', 'com.mcst:easyfk-dependencies:2.6.13.3')
-        library('fileStorage', 'org.dromara.x-file-storage:x-file-storage-spring:2.2.1')
+        library("dependencies", "com.mcst:easyfk-dependencies:3.2.12")
+        library('lombok', 'org.projectlombok:lombok:1.18.38')
+        library('processor', 'org.springframework.boot:spring-boot-configuration-processor:3.2.12')
+        library('fileStorage', 'org.dromara.x-file-storage:x-file-storage-spring:2.3.0')
         library('minio', 'io.minio:minio:8.5.14')
         library('huawei', 'com.huaweicloud:esdk-obs-java:3.22.12')
         library('aliyun', 'com.aliyun.oss:aliyun-sdk-oss:3.16.1')

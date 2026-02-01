@@ -1,19 +1,23 @@
 //指定项目版本号和group
-version = '2.6.13.3'
+version = '3.2.12'
 group = 'com.mcst'
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
     withSourcesJar()
 }
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 dependencies {
-    implementation platform(libs.easyfkDependencies)
+    implementation platform(libs.dependencies)
+    compileOnly libs.lombok
+    testCompileOnly libs.lombok
+    annotationProcessor(libs.lombok, libs.processor)
+    testAnnotationProcessor(libs.lombok, libs.processor)
     implementation("com.mcst:easyfk-core")
     implementation("com.mcst:log-log4j2")
     implementation("com.mcst:web-prd")
@@ -24,12 +28,6 @@ dependencies {
     implementation(libs.qiniu)
     implementation(libs.tencent)
     implementation(libs.baidu)
-    compileOnly 'org.projectlombok:lombok:1.18.32'
-    testCompileOnly 'org.projectlombok:lombok:1.18.32'
-    annotationProcessor('org.projectlombok:lombok:1.18.32', 'org.springframework' +
-            '.boot:spring-boot-configuration-processor:2.6.13')
-    testAnnotationProcessor('org.projectlombok:lombok:1.18.32', 'org.springframework' +
-            '.boot:spring-boot-configuration-processor:2.6.13')
 }
 // 将依赖包复制到lib目录
 tasks.register('copyJar', Copy) {
