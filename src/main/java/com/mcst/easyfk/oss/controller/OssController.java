@@ -59,6 +59,9 @@ public class OssController {
         }
         if (fileType.equals(FileType.IMAGE)) {
             of.setContentType("image/" + extName);
+            if (uploadProperties.getThumbnail()) {
+                of.thumbnail(thumbnail -> thumbnail.size(uploadProperties.getThumbnailWidth(), uploadProperties.getThumbnailHeight()));
+            }
             if (uploadProperties.getCompress()) {
                 boolean compress = false;
                 if (CharacterConstant.STAR.equals(uploadProperties.getCompressImageExtName())) {

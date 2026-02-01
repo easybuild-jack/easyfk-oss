@@ -9,6 +9,14 @@ spring:
       max-request-size: 1000MB
   application:
     name: easyfk-oss
-  profiles:
-    active: amazon
+  config:
+    import:
+      - "file:config/application-local.yml"
 
+easyfk:
+  config:
+    oss:
+      upload:
+        thumbnail: true
+        thumbnail-width: 100
+        thumbnail-height: 100

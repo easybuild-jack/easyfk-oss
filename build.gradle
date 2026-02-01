@@ -27,7 +27,10 @@ dependencies {
     implementation(libs.aliyun)
     implementation(libs.qiniu)
     implementation(libs.tencent)
-    implementation(libs.baidu)
+    implementation(libs.baidu){
+        exclude group: 'ch.qos.logback'
+        exclude group: 'ch.qos.reload4j'
+    }
 }
 // 将依赖包复制到lib目录
 tasks.register('copyJar', Copy) {

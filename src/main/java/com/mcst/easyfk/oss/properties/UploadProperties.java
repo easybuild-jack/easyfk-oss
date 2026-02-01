@@ -37,4 +37,19 @@ public class UploadProperties {
     private Boolean overwriteFileName = Boolean.FALSE;
 
 
+    /**
+     * 是否开启图片缩略图
+     */
+    private Boolean thumbnail = Boolean.FALSE;
+
+    /**
+     * 缩略图的宽度
+     */
+    private int thumbnailWidth = 200;
+    /**
+     * 缩略图的高度
+     */
+    private int thumbnailHeight = 200;
+
+
 }

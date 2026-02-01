@@ -10,3 +10,4 @@ dromara:
         base-path: files/ # 基础路径
         path-patterns: /file/** # 访问路径
         storage-path: D:/upload/fileStorage/ # 存储路径
+
