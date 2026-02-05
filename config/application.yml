@@ -11,12 +11,12 @@ spring:
     name: easyfk-oss
   config:
     import:
-      - "file:config/application-local.yml"
+      - "file:config/application-minio.yml"
 
 easyfk:
   config:
     oss:
       upload:
         thumbnail: true
-        thumbnail-width: 100
-        thumbnail-height: 100
+        thumbnail-width: 200
+        thumbnail-height: 200
