@@ -39,7 +39,7 @@ public class OssController {
      * 统一上传文件，支持所有类型
      */
     @Operation(description = "统一上传接口")
-    @PostMapping("/upload")
+    @PostMapping({"/upload", "/upload/all"})
     @Parameters({@Parameter(description = "业务名称", name = "bizName"), @Parameter(description = "file", name = "文件信息", required = true)})
     public ResponseResult<String> upload(MultipartHttpServletRequest multipartRequest) {
         // 验证并提取文件
