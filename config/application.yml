@@ -12,11 +12,27 @@ spring:
   config:
     import:
       - "file:config/application-minio.yml"
+  # Redis 配置（用于分片上传状态缓存）
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password:
+      database: 0
 
 easyfk:
   config:
+    # OSS 上传配置
     oss:
       upload:
         thumbnail: true
         thumbnail-width: 200
         thumbnail-height: 200
+      # 分片上传配置
+      multipart:
+        enabled: false
+        chunk-size: 5242880
+        max-file-size: 10737418240
+        task-expire-hours: 24
+        instant-upload-enabled: false
+        instant-upload-cache-days: 30

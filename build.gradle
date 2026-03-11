@@ -21,6 +21,7 @@ dependencies {
     implementation("com.mcst:easyfk-core")
     implementation("com.mcst:log-log4j2")
     implementation("com.mcst:web-prd")
+    implementation("com.mcst:cache-redis")
     implementation(libs.fileStorage)
     implementation(libs.minio)
     implementation(libs.huawei)

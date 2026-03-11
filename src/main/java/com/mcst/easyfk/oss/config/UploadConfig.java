@@ -1,6 +1,7 @@
 package com.mcst.easyfk.oss.config;
 
 import cn.hutool.core.io.FileUtil;
+import com.mcst.easyfk.oss.properties.MultipartUploadProperties;
 import com.mcst.easyfk.oss.properties.UploadProperties;
 import jakarta.servlet.MultipartConfigElement;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -12,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * @author liu yijun
  */
 @Configuration
-@EnableConfigurationProperties({UploadProperties.class})
+@EnableConfigurationProperties({UploadProperties.class, MultipartUploadProperties.class})
 public class UploadConfig {
 
     /**

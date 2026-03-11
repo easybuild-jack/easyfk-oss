@@ -1,6 +1,5 @@
 package com.mcst.easyfk.oss.properties;
 
-
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -36,11 +35,10 @@ public class UploadProperties {
      */
     private Boolean overwriteFileName = Boolean.FALSE;
 
-
     /**
      * 是否开启图片缩略图
      */
-    private Boolean thumbnail = Boolean.FALSE;
+    private Boolean thumbnail = Boolean.TRUE;
 
     /**
      * 缩略图的宽度
@@ -50,6 +48,5 @@ public class UploadProperties {
      * 缩略图的高度
      */
     private int thumbnailHeight = 200;
-
 
 }
