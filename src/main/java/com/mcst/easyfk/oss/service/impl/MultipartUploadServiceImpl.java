@@ -16,6 +16,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.x.file.storage.core.FileInfo;
 import org.dromara.x.file.storage.core.FileStorageService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,6 +42,7 @@ public class MultipartUploadServiceImpl implements MultipartUploadService {
     private FileStorageService fileStorageService;
 
     @Resource
+    @Lazy
     private ICacheService cacheService;
 
     @Resource
@@ -57,7 +59,7 @@ public class MultipartUploadServiceImpl implements MultipartUploadService {
         if (Boolean.TRUE.equals(multipartProperties.getInstantUploadEnabled()) && EmptyUtil.isNotEmpty(request.getFileMd5())) {
             String existingUrl = cacheService.queryByKey(MD5_KEY_PREFIX + request.getFileMd5(), CACHE_NS);
             if (EmptyUtil.isNotEmpty(existingUrl)) {
-                log.info("秒传成功，文件MD5: {}, URL: {}", request.getFileMd5(), existingUrl);
+                log.debug("秒传成功，文件MD5: {}, URL: {}", request.getFileMd5(), existingUrl);
                 return MultipartUploadResponse.instantSuccess(existingUrl);
             }
         }
@@ -100,7 +102,7 @@ public class MultipartUploadServiceImpl implements MultipartUploadService {
         Duration taskTtl = Duration.ofHours(multipartProperties.getTaskExpireHours());
         cacheService.cacheObject(TASK_KEY_PREFIX + uploadId, task, taskTtl, CACHE_NS);
 
-        log.info("分片上传初始化成功，uploadId: {}, 文件名: {}, 总分片数: {}", uploadId, request.getFileName(), totalChunks);
+        log.debug("分片上传初始化成功，uploadId: {}, 文件名: {}, 总分片数: {}", uploadId, request.getFileName(), totalChunks);
 
         return MultipartUploadResponse.initSuccess(uploadId, chunkSize, totalChunks, new ArrayList<>());
     }
@@ -133,7 +135,7 @@ public class MultipartUploadServiceImpl implements MultipartUploadService {
         // 3. 检查是否已上传（使用单独的 key 存储每个分片状态，保证并发安全）
         String partKey = buildPartKey(uploadId, chunkIndex);
         if (cacheService.existKey(partKey, CACHE_NS)) {
-            log.info("分片已上传，跳过，uploadId: {}, chunkIndex: {}", uploadId, chunkIndex);
+            log.debug("分片已上传，跳过，uploadId: {}, chunkIndex: {}", uploadId, chunkIndex);
             return true;
         }
 
@@ -148,7 +150,7 @@ public class MultipartUploadServiceImpl implements MultipartUploadService {
             Duration taskTtl = Duration.ofHours(multipartProperties.getTaskExpireHours());
             cacheService.cacheObject(partKey, true, taskTtl, CACHE_NS);
 
-            log.info("分片上传成功，uploadId: {}, chunkIndex: {}/{}", uploadId, chunkIndex, task.getTotalChunks());
+            log.debug("分片上传成功，uploadId: {}, chunkIndex: {}/{}", uploadId, chunkIndex, task.getTotalChunks());
             return true;
         } catch (Exception e) {
             log.error("分片上传失败，uploadId: {}, chunkIndex: {}", uploadId, chunkIndex, e);
@@ -193,7 +195,7 @@ public class MultipartUploadServiceImpl implements MultipartUploadService {
             // 6. 清理上传任务缓存
             cleanupTask(uploadId);
 
-            log.info("分片上传完成，uploadId: {}, 文件URL: {}", uploadId, fileUrl);
+            log.debug("分片上传完成，uploadId: {}, 文件URL: {}", uploadId, fileUrl);
             return fileUrl;
         } catch (Exception e) {
             log.error("完成上传失败，uploadId: {}", uploadId, e);
@@ -223,7 +225,7 @@ public class MultipartUploadServiceImpl implements MultipartUploadService {
         // 4. 清理缓存
         cleanupTask(uploadId);
 
-        log.info("上传任务已取消，uploadId: {}", uploadId);
+        log.debug("上传任务已取消，uploadId: {}", uploadId);
     }
 
     /**
