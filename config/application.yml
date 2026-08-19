@@ -36,3 +36,6 @@ easyfk:
         task-expire-hours: 24
         instant-upload-enabled: false
         instant-upload-cache-days: 30
+    web:
+      cors:
+        open: true

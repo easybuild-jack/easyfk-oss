@@ -40,4 +40,7 @@ local.properties
 *.tmp
 *.bak
 *.swp
-*~ 
+*~
+gradle
+gradlew
+gradlew.bat
