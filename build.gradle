@@ -1,5 +1,5 @@
 //指定项目版本号和group
-version = '3.2.12'
+version = '3.5.16'
 group = 'com.mcst'
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
@@ -13,7 +13,7 @@ java {
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 dependencies {
-    implementation platform(libs.dependencies)
+    implementation platform(libs.easyfkDependencies)
     compileOnly libs.lombok
     testCompileOnly libs.lombok
     annotationProcessor(libs.lombok, libs.processor)
@@ -27,10 +27,20 @@ dependencies {
     implementation(libs.huawei)
     implementation(libs.aliyun)
     implementation(libs.qiniu)
-    implementation(libs.tencent)
     implementation(libs.baidu){
         exclude group: 'ch.qos.logback'
         exclude group: 'ch.qos.reload4j'
+        // 百度 SDK 的 hadoop / hbase 适配依赖会拖入 hadoop 2.5.1、hbase 2.5.11、javax.servlet-api 2.5、
+        // Jackson 1.x、Jersey 1.9、Guice 3.0 等与 Spring Boot 3.5（Jakarta EE 10）不兼容的旧包，BOS 客户端并不需要
+        exclude group: 'org.apache.hadoop'
+        exclude group: 'org.apache.hbase'
+        exclude group: 'org.apache.hbase.thirdparty'
+        // bce 携带 BC 1.59（jdk15on），与 aliyun SDK 的 bcprov-jdk18on 同包重复，保留新版
+        exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
+    }
+    implementation(libs.tencent) {
+        // cos 自带 bcprov-jdk15on 1.70，与 aliyun SDK 的 bcprov-jdk18on 同包（org.bouncycastle.*）重复，保留新版
+        exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
     }
 }
 // 将依赖包复制到lib目录
@@ -55,5 +65,5 @@ tasks.named('jar') {
 }
 
 tasks.named('wrapper') {
-    distributionUrl = 'https://services.gradle.org/distributions/gradle-8.7-bin.zip'
+    distributionUrl = 'https://services.gradle.org/distributions/gradle-9.3.0-bin.zip'
 }

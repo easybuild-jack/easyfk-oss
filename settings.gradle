@@ -2,19 +2,23 @@ rootProject.name = 'easyfk-oss'
 
 dependencyResolutionManagement.versionCatalogs {
     libs {
-        library("dependencies", "com.mcst:easyfk-dependencies:3.2.12")
-        library('lombok', 'org.projectlombok:lombok:1.18.38')
-        library('processor', 'org.springframework.boot:spring-boot-configuration-processor:3.2.12')
+        // 框架 BOM：Spring Boot / Spring Cloud / 第三方组件版本统一由它约束
+        library('easyfkDependencies', 'com.mcst:easyfk-dependencies:3.5.16')
+        library('lombok', 'org.projectlombok:lombok:1.18.46')
+        library('processor', 'org.springframework.boot:spring-boot-configuration-processor:3.5.16')
+
+        // ========== OSS 相关 SDK（未纳入 easyfk-dependencies BOM，由本项目自行管理版本） ==========
+        // 版本基线：沿用框架的 okhttp 4.12.1 / httpclient 4.5.x / Jackson 2.x / Jakarta EE 10，
+        // 因此下列组件只能跟到各自的「兼容最新版」，不能盲升大版本：
+        //  - minio 8.6.0+ / 9.x 已切到 okhttp 5，与 BOM 为 influxdb-client 锁定的 okhttp 4.12.1 冲突
+        //  - esdk-obs-java 3.26.9+ 改用 okhttp-jvm 5.3（与 okhttp 4.12.1 包名重复，二者不能共存）
         library('fileStorage', 'org.dromara.x-file-storage:x-file-storage-spring:2.3.0')
-        library('minio', 'io.minio:minio:8.5.14')
-        library('huawei', 'com.huaweicloud:esdk-obs-java:3.22.12')
-        library('aliyun', 'com.aliyun.oss:aliyun-sdk-oss:3.16.1')
-        library('qiniu', 'com.qiniu:qiniu-java-sdk:7.14.0')
-        library('tencent', 'com.qcloud:cos_api:5.6.155')
-        library('baidu', 'com.baidubce:bce-java-sdk:0.10.251')
-        library('amazonaws', 'com.amazonaws:aws-java-sdk-s3:1.12.429')
+        library('minio', 'io.minio:minio:8.5.17')
+        library('huawei', 'com.huaweicloud:esdk-obs-java:3.26.6')
+        library('aliyun', 'com.aliyun.oss:aliyun-sdk-oss:3.18.5')
+        library('qiniu', 'com.qiniu:qiniu-java-sdk:7.19.0')
+        library('tencent', 'com.qcloud:cos_api:5.6.283')
+        library('baidu', 'com.baidubce:bce-java-sdk:0.10.450')
+        // 如需 S3/兼容 S3 协议，建议使用 Spring Boot BOM 管理的 software.amazon.awssdk:s3（AWS SDK v1 已停止支持）
     }
 }
-
-
-
