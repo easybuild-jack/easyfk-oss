@@ -128,11 +128,11 @@ dromara:
 | 技术 | 版本 | 说明 |
 |------|------|------|
 | Java | 21 | JDK 版本 |
-| Spring Boot | 3.5.x | 基础框架（版本由 easyfk-dependencies 3.5.16 BOM 统一管理） |
+| Spring Boot | 3.2.x | 基础框架 |
 | x-file-storage | 2.3.0 | 文件存储抽象层 |
 | Redis | - | 分片上传状态存储 |
 | Swagger/OpenAPI | 3.x | API 文档 |
-| Gradle | 9.x | 构建工具 |
+| Gradle | 8.x | 构建工具 |
 
 ### 依赖的 EasyFK 组件
 
