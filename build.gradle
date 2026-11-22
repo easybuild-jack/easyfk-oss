@@ -69,7 +69,7 @@ tasks.register('copyJar', Copy) {
 
 tasks.named('jar') {
     // 自定义jar包名称
-    archiveFileName = 'mcstOss.jar'
+    archiveFileName = 'easyfk-oss.jar'
     // lib目录的清除和复制任务
     dependsOn copyJar
     manifest {
