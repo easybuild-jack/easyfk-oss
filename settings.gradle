@@ -9,11 +9,15 @@ dependencyResolutionManagement.versionCatalogs {
 
         // ========== OSS 相关 SDK（未纳入 easyfk-dependencies BOM，由本项目自行管理版本） ==========
         library('fileStorage', 'org.dromara.x-file-storage:x-file-storage-spring:2.3.0')
+        // x-file-storage 用 tika 做 MIME 嗅探；其自带 2.4.1 命中 CVE-2025-66516（XXE，修于 3.2.2），此处显式抬版
+        library('tikaCore', 'org.apache.tika:tika-core:3.2.2')
         library('minio', 'io.minio:minio:8.5.17')
         library('huawei', 'com.huaweicloud:esdk-obs-java:3.26.6')
         library('aliyun', 'com.aliyun.oss:aliyun-sdk-oss:3.18.5')
         library('qiniu', 'com.qiniu:qiniu-java-sdk:7.19.0')
         library('tencent', 'com.qcloud:cos_api:5.6.283')
         library('baidu', 'com.baidubce:bce-java-sdk:0.10.450')
+        // Amazon S3 及兼容 S3 协议（amazon-s3-v2 平台）；版本与 x-file-storage 2.3.0 的编译基线一致
+        library('s3', 'software.amazon.awssdk:s3:2.29.29')
     }
 }

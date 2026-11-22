@@ -14,6 +14,13 @@ java {
 
 dependencies {
     implementation platform(libs.easyfkDependencies)
+    constraints {
+        // 框架 BOM 经 spring-cloud-dependencies 把 logging-interceptor 约束在 4.12.0，
+        // 而 okhttp 实际解析为 4.12.1（minio 要求），此处对齐到同一版本
+        implementation('com.squareup.okhttp3:logging-interceptor:4.12.1') {
+            because 'okhttp 已升级到 4.12.1，拦截器需保持同一发行版本'
+        }
+    }
     compileOnly libs.lombok
     testCompileOnly libs.lombok
     annotationProcessor(libs.lombok, libs.processor)
@@ -22,11 +29,17 @@ dependencies {
     implementation("com.mcst:log-log4j2")
     implementation("com.mcst:web-prd")
     implementation("com.mcst:cache-redis")
-    implementation(libs.fileStorage)
+    implementation(libs.fileStorage) {
+        // hutool-all（easyfk-core 引入）已包含全部 hutool 模块类，
+        // 排除 x-file-storage 自带的 hutool-core 5.8.28，避免与 hutool-all 5.8.48 同名类重复
+        exclude group: 'cn.hutool', module: 'hutool-core'
+    }
+    implementation(libs.tikaCore)
     implementation(libs.minio)
     implementation(libs.huawei)
     implementation(libs.aliyun)
     implementation(libs.qiniu)
+    implementation(libs.s3)
     implementation(libs.baidu){
         exclude group: 'ch.qos.logback'
         exclude group: 'ch.qos.reload4j'
@@ -37,6 +50,9 @@ dependencies {
         exclude group: 'org.apache.hbase.thirdparty'
         // bce 携带 BC 1.59（jdk15on），与 aliyun SDK 的 bcprov-jdk18on 同包重复，保留新版
         exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
+        // commons-httpclient 3.1 已于 2011 年停止维护，仅被 com.baidubce.services.iotdmp.PlatformClient
+        // （物联网平台客户端，与 BOS 对象存储无关）引用，BOS 相关类全部基于 httpclient 4.x，可安全排除
+        exclude group: 'commons-httpclient', module: 'commons-httpclient'
     }
     implementation(libs.tencent) {
         // cos 自带 bcprov-jdk15on 1.70，与 aliyun SDK 的 bcprov-jdk18on 同包（org.bouncycastle.*）重复，保留新版
@@ -64,6 +80,3 @@ tasks.named('jar') {
     }
 }
 
-tasks.named('wrapper') {
-    distributionUrl = 'https://services.gradle.org/distributions/gradle-9.3.0-bin.zip'
-}
